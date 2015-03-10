@@ -4,7 +4,7 @@
 Модуль обеспечивает связь между ORM session и db engines
 """
 
-from noseapp_alchemy_ex.exc import InvalidBindKey
+from noseapp_alchemy.exc import InvalidBindKey
 
 
 _ENGINES = {}

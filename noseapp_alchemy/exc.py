@@ -6,11 +6,6 @@ class BaseError(BaseException):
     pass
 
 
-class ValidationError(BaseError):
-    """Ошибки валидации"""
-    pass
-
-
 class NotFound(BaseError):
     """Не найдено"""
     pass

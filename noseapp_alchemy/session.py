@@ -2,8 +2,8 @@
 
 from sqlalchemy.orm.session import Session as BaseSession
 
-from noseapp_alchemy_ex import registry
-from noseapp_alchemy_ex.exc import InvalidBindKey
+from noseapp_alchemy import registry
+from noseapp_alchemy.exc import InvalidBindKey
 
 
 class Session(BaseSession):

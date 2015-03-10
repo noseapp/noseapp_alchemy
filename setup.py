@@ -3,7 +3,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-import noseapp_alchemy_ex
+import noseapp_alchemy
 
 
 with open('requirements.txt') as fp:
@@ -12,9 +12,9 @@ with open('requirements.txt') as fp:
 
 if __name__ == '__main__':
     setup(
-        name='noseapp_alchemy_ex',
+        name='noseapp_alchemy',
         url='https://github.com/trifonovmixail/noseapp_alchemy',
-        version=noseapp_alchemy_ex.__version__,
+        version=noseapp_alchemy.__version__,
         packages=find_packages(),
         author='Mikhail Trifonov',
         author_email='mikhail.trifonov@corp.mail.ru',

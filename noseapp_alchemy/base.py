@@ -12,10 +12,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine.result import exc
 from sqlalchemy.orm import scoped_session
 
-from noseapp_alchemy_ex import registry
-from noseapp_alchemy_ex.session import Session
-from noseapp_alchemy_ex.constants import DEFAULT_BIND_KEY
-from noseapp_alchemy_ex.constants import DEFAULT_POOL_CLASS
+from noseapp_alchemy import registry
+from noseapp_alchemy.session import Session
+from noseapp_alchemy.constants import DEFAULT_BIND_KEY
+from noseapp_alchemy.constants import DEFAULT_POOL_CLASS
 
 
 AUTO_FLUSH = True

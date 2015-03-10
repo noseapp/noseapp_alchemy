@@ -3,12 +3,12 @@
 from copy import copy
 from contextlib import contextmanager
 
-from noseapp_alchemy_ex import registry
-from noseapp_alchemy_ex.config import Config
-from noseapp_alchemy_ex.base import setup_engine
-from noseapp_alchemy_ex.base import setup_session
-from noseapp_alchemy_ex.constants import DEFAULT_BIND_KEY
-from noseapp_alchemy_ex.constants import DEFAULT_POOL_CLASS
+from noseapp_alchemy import registry
+from noseapp_alchemy.config import Config
+from noseapp_alchemy.base import setup_engine
+from noseapp_alchemy.base import setup_session
+from noseapp_alchemy.constants import DEFAULT_BIND_KEY
+from noseapp_alchemy.constants import DEFAULT_POOL_CLASS
 
 
 DEFAULT_PORT = 3306
@@ -76,7 +76,7 @@ class MySQLEx(object):
         """
         setup_session(**params)
 
-    def shared_client(self, bind_key=DEFAULT_BIND_KEY):
+    def get_client(self, bind_key=DEFAULT_BIND_KEY):
         """
         Установить клиента по работе с БД, как расшрение
         для класса TestCase как расширение для NoseApp

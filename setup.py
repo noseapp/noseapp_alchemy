@@ -23,7 +23,4 @@ if __name__ == '__main__':
             'noseapp',
             'sqlalchemy==0.9.8',
         ],
-        dependency_links=[
-            'git+https://github.com/trifonovmixail/noseapp.git@master',
-        ],
     )

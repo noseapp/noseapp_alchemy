@@ -3,18 +3,15 @@
 from setuptools import setup
 from setuptools import find_packages
 
-import noseapp_alchemy
 
-
-with open('requirements.txt') as fp:
-    requirements = [req.strip() for req in fp.readlines() if not req.startswith('--')]
+__version__ = '0.0.0'
 
 
 if __name__ == '__main__':
     setup(
         name='noseapp_alchemy',
         url='https://github.com/trifonovmixail/noseapp_alchemy',
-        version=noseapp_alchemy.__version__,
+        version=__version__,
         packages=find_packages(),
         author='Mikhail Trifonov',
         author_email='mikhail.trifonov@corp.mail.ru',
@@ -22,7 +19,10 @@ if __name__ == '__main__':
         include_package_data=True,
         zip_safe=False,
         platforms='any',
-        install_requires=requirements,
+        install_requires=[
+            'noseapp',
+            'sqlalchemy==0.9.8',
+        ],
         dependency_links=[
             'git+https://github.com/trifonovmixail/noseapp.git@master',
         ],

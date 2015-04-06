@@ -148,6 +148,7 @@ class ModelCRUD(object):
     Класс расширяет возможности BaseModel
     для упрощения работы с CRUD операциями
     """
+    query = Session.query_property()
 
     def __init__(self, **params):
         """
@@ -157,10 +158,6 @@ class ModelCRUD(object):
 
         for k, v in params:
             setattr(self, k, v)
-
-    @StaticProperty
-    def query(cls):
-        return Session.query_property(cls)
 
     @StaticProperty
     def objects(cls):

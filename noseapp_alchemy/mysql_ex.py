@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from copy import copy
 from contextlib import contextmanager
+
+from noseapp.core import ExtensionInstaller
 
 from noseapp_alchemy import registry
 from noseapp_alchemy.config import Config
@@ -26,26 +27,18 @@ DEFAULT_DNS_PARAMS = {
 
 class MySQLClient(object):
     """
-    Клиент для работы с MySQL
+    Read-write client
     """
-
-    name = None
 
     def __init__(self, engine):
         self._engine = engine
 
     @contextmanager
     def read(self):
-        """
-        Выполнить sql на чтение
-        """
         yield self._engine.connect().execute
 
     @contextmanager
     def write(self):
-        """
-        Выполнить sql на запись
-        """
         connection = self._engine.connect()
         trans = connection.begin()
         try:
@@ -58,10 +51,13 @@ class MySQLClient(object):
 
 class MySQLEx(object):
     """
-    Установщик расширения MySQL
+    Extension installer
     """
 
     name = 'mysql'
+
+    config_key = 'ALCHEMY_EX_MYSQL'
+    session_config_key = 'ALCHEMY_EX_SESSION'
 
     client_class = MySQLClient
 
@@ -69,26 +65,40 @@ class MySQLEx(object):
         for config in configs:
             setup_engine(**config)
 
+    @classmethod
+    def install(cls, app):
+        configs = app.config.get(cls.config_key, [])
+
+        for config in configs:
+            setup_engine(**config)
+
+        session_options = app.config.get(cls.session_config_key, {})
+        setup_session(**session_options)
+
+        installer = ExtensionInstaller(cls, tuple(), {})
+        app.shared_extension(cls=installer)
+
+        return installer
+
     @staticmethod
     def orm_session_configure(**params):
         """
-        Устанавливает сессию для работы с ORM
+        Setup session or reconfigure
         """
         setup_session(**params)
 
     def get_client(self, bind_key=DEFAULT_BIND_KEY):
         """
-        Установить клиента по работе с БД, как расшрение
-        для класса TestCase как расширение для NoseApp
+        Get db client by bind key
         """
-        cls = copy(self.client_class)
-        cls.name = bind_key
-        return cls(registry.get_engine(bind_key))
+        return self.client_class(
+            registry.get_engine(bind_key),
+        )
 
 
 def make_config():
     """
-    Создать скелет конфигурации для engine
+    Create base config
     """
     return Config(
         db=None,

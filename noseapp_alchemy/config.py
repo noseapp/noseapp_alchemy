@@ -3,15 +3,11 @@
 
 class Config(dict):
     """
-    Предполагается, что этот словарь
-    будет хранить базовую конфигурацию
+    Base config
     """
 
     def configure(self, **params):
         self.update(params)
 
     def dns_configure(self, **params):
-        """
-        Конфигурирует параметры для строки dns
-        """
         self['dns_params'].update(params)

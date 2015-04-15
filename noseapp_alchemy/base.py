@@ -1,9 +1,5 @@
 # -*- coding: utf8 -*-
 
-"""
-Базовый модуль для работы с alchemy
-"""
-
 from urllib import urlencode
 
 from sqlalchemy import event
@@ -24,9 +20,6 @@ EXPIRE_ON_COMMIT = True
 
 
 def ping_connection(connection, connection_record, connection_proxy):
-    """
-    Проверяет, что соединение живое
-    """
     cursor = connection.cursor()
 
     try:
@@ -45,17 +38,15 @@ def setup_engine(
         pool_class=DEFAULT_POOL_CLASS,
         **engine_options):
     """
-    Установить движок для работы с DB
-
-    :param host: db хост
-    :param port: db порт
-    :param db: имя базы
-    :param user: пользователь
-    :param password: пароль
-    :param protocol: протокол по которому будет выбрана стратегия работы
-    :param pool_class: класс пула соединений
-    :param dns_params: словарь параметров которые нужно добавить к dns
-    :param engine_options: аргументы которые нужно передать в create_engine
+    :param host: db host
+    :param port: db port
+    :param db: db name
+    :param user: user name
+    :param password: user password
+    :param protocol: dns protocol
+    :param pool_class: pool class (original param name: poolclass)
+    :param dns_params: params to dns
+    :param engine_options: engine kwargs
     """
     if dns_params and isinstance(dns_params, dict):
         dns_params = '?%s' % urlencode(dns_params)
@@ -87,7 +78,7 @@ def setup_session(
         expire_on_commit=EXPIRE_ON_COMMIT,
         **options):
     """
-    Установить сессию для работы с orm
+    Setup orm session
     """
     sess = scoped_session(
         sessionmaker(

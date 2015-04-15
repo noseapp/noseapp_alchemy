@@ -7,9 +7,6 @@ from noseapp_alchemy.exc import InvalidBindKey
 
 
 class Session(BaseSession):
-    """
-    Класс позволяет мапить модели на установленные движки
-    """
 
     def get_bind(self, mapper=None, clause=None):
         if mapper is not None:

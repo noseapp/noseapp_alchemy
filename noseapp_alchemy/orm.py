@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Модуль для работы с ORM sql alchemy
-"""
-
 import logging
 from contextlib import contextmanager
 
@@ -22,9 +18,6 @@ Session = registry.get_session()
 
 @contextmanager
 def session_scope(rollback=True):
-    """
-    Контекстный менеджер для работы с сессией
-    """
     session = Session()
     try:
         yield session
@@ -38,27 +31,18 @@ def session_scope(rollback=True):
 
 def dict_info(params):
     """
-    Переводит словарь параметров в строковое представоение
-
-    :param params(dict): словарь с параметрами
+    :type params: dict
     """
     return u', '.join([u'%s=%s' % p for p in params.items()])
 
 
 class StaticProperty(property):
-    """
-    Делает метод класса "статическим" свойством
-    """
 
     def __get__(self, instance, cls):
         return classmethod(self.fget).__get__(instance, cls)()
 
 
 class ModelObjects(object):
-    """
-    Класс реализует интерфейс для осуществления
-    операций над группой объектов модели
-    """
 
     DEFAULT_OFFSET = 0
     DEFAULT_LIMIT = 100
@@ -67,9 +51,6 @@ class ModelObjects(object):
         self.__model = model
 
     def get(self, pk):
-        """
-        Получение объекта по первичному ключу
-        """
         with session_scope(rollback=False) as session:
             obj = session.query(self.__model).get(pk)
 
@@ -81,9 +62,6 @@ class ModelObjects(object):
         )
 
     def get_by(self, **params):
-        """
-        Получение объекта по фильтрам
-        """
         with session_scope(rollback=False) as session:
             obj = session.query(self.__model).filter_by(**params).first()
 
@@ -95,27 +73,18 @@ class ModelObjects(object):
         )
 
     def getlist(self, offset=DEFAULT_OFFSET, limit=DEFAULT_LIMIT):
-        """
-        Получение списка всех объектов
-        """
         with session_scope(rollback=False) as session:
             result = session.query(self.__model).offset(offset).limit(limit).all()
 
         return result
 
     def getlist_by(self, offset=DEFAULT_OFFSET, limit=DEFAULT_LIMIT, **params):
-        """
-        Получение списка по фильтрам
-        """
         with session_scope(rollback=False) as session:
             result = session.query(self.__model).filter_by(**params).offset(offset).limit(limit).all()
 
         return result
 
     def update_by(self, by, **params):
-        """
-        Обновление объектов по параметрам
-        """
         with session_scope() as session:
             objects = session.query(self.__model).filter_by(**by).all()
 
@@ -131,9 +100,6 @@ class ModelObjects(object):
         return objects
 
     def remove_by(self, **params):
-        """
-        Удаление объектов по параметрам
-        """
         with session_scope() as session:
             objects = session.query(self.__model).filter_by(**params).all()
 
@@ -144,16 +110,10 @@ class ModelObjects(object):
 
 
 class ModelCRUD(object):
-    """
-    Класс расширяет возможности BaseModel
-    для упрощения работы с CRUD операциями
-    """
+
     query = Session.query_property()
 
     def __init__(self, **params):
-        """
-        Инициализатор нового объекта модели
-        """
         logger.debug('create new object of model {}'.format(self.__class__.__name__))
 
         for k, v in params:
@@ -175,9 +135,6 @@ class ModelCRUD(object):
         return instance
 
     def to_dict(self):
-        """
-        Конвертирует данные модели в словарь
-        """
         return dict(
             (k, self.__dict__[k])
             for k in self.__dict__
@@ -185,9 +142,6 @@ class ModelCRUD(object):
         )
 
     def update(self, **params):
-        """
-        Обновление текущего объекта
-        """
         with session_scope() as session:
 
             for k, v in params.items():
@@ -198,9 +152,6 @@ class ModelCRUD(object):
             session.refresh(self)
 
     def remove(self):
-        """
-        Удаление объекта по id
-        """
         with session_scope() as session:
             session.delete(self)
             session.commit()
@@ -213,10 +164,6 @@ class ModelCRUD(object):
 
 
 def mount_meta(meta, cls):
-    """
-    Монтирует свойства из класса Meta в класс
-    модели, как это привычно видеть алхимии
-    """
     model_cls = cls.__mro__[0]
 
     table_name = getattr(meta, 'table', None)
@@ -226,10 +173,6 @@ def mount_meta(meta, cls):
 
 
 class BoundDeclarativeMeta(DeclarativeMeta):
-    """
-    Расширяет конфигурацию модели дополняя ее классом Meta
-    и возможностью монтировать модели к различным движкам
-    """
 
     def __init__(self, name, bases, d):
         meta = d.pop('Meta', None)
@@ -244,9 +187,7 @@ class BoundDeclarativeMeta(DeclarativeMeta):
 
         try:
             self.__table__.info['bind_key'] = bind_key
-        except AttributeError:  # при создании декларативного
-            # класса еще не будет атрибута __table__, поэтому эта
-            # ситация является нормальной
+        except AttributeError:
             pass
 
 

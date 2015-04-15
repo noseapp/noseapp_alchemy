@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Модуль обеспечивает связь между ORM session и db engines
-"""
-
 from noseapp_alchemy.exc import InvalidBindKey
 
 

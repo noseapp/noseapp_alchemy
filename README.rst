@@ -116,8 +116,8 @@ Get objects by
 
 ::
 
-    objects = MyModel.getlist_by(name='Hello')
-    obj = MyModel.object.get_by(name='Hello')
+    objects = MyModel.objects.getlist_by(name='Hello')
+    obj = MyModel.objects.get_by(name='Hello')
 
 
 Etc...See orm module...

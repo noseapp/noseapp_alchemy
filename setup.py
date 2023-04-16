@@ -21,6 +21,6 @@ if __name__ == '__main__':
         platforms='any',
         install_requires=[
             'noseapp>=1.0.9',
-            'sqlalchemy==0.9.8',
+            'sqlalchemy==1.3.0',
         ],
     )
